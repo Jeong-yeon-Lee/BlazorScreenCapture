@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject IJSRuntime js
+
+<h1>ScreenShot</h1>
+<div class="position-relative h-100 w-100">
+    <div id="capture" style="padding: 10px; background: #f5da55; width:500px;height:500px; top:40%; left:40%; opacity:0.3;" class="position-absolute bg-danger">
+        <h4 style="color: #000; ">내부요소</h4>
+    </div>
+    <button @onclick="Test" class="position-relative" style="top:40%; left:40%;">test</button>
+
+    <canvas id="canvas" width="900" height="600"
+                style="border:1px solid #d3d3d3;"></canvas>
+
+</div>
+
+@code{
+    string url = "";
+    private async Task Test()
+    {
+        //url= await js.InvokeAsync<string>("screenCaptureTest");
+        await js.InvokeVoidAsync("screenCaptureTest");
+    }
+}
