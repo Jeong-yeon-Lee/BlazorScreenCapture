@@ -1,0 +1,113 @@
+﻿@page "/resize"
+@inject IJSRuntime js
+
+<h3>Resize</h3>
+<table id="resizeMe" class="table">
+    <thead>
+        <tr id="main-container" class="h-0 flex-grow-1 d-flex align-items-center" ondragenter="event.stopPropagation(); event.preventDefault();"
+             ondragover="event.stopPropagation(); event.preventDefault();"
+             ondrop="event.stopPropagation(); event.preventDefault();">
+            <th  style="width: @($"{Wpercent}%")" draggable="true" @ondragstart="OnDragStart" @ondrag="OnDrag" @ondrag:preventDefault @ondragend="OnDragEnd" @ondragend:preventDefault>No.</th>
+            <th>First name</th>
+            <th>Last name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Andrea</td>
+            <td>Ross</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Penelope</td>
+            <td>Mills</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Sarah</td>
+            <td>Grant</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Vanessa</td>
+            <td>Roberts</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Oliver</td>
+            <td>Alsop</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Jennifer</td>
+            <td>Forsyth</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Michelle</td>
+            <td>King</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Steven</td>
+            <td>Kelly</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>Julian</td>
+            <td>Ferguson</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>Chloe</td>
+            <td>Ince</td>
+        </tr>
+    </tbody>
+</table>
+
+
+@code {
+    double Wpercent = 25f;
+    Dictionary<string, double> rectDict;
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+    private async Task OnResize()
+    {
+        //await js.InvokeVoidAsync("onResizeTest");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        //await OnResize();
+    }
+
+    private async Task OnDragStart(DragEventArgs e)
+    {
+        rectDict = await js.InvokeAsync<Dictionary<string, double>>("langcode.getDomRect", "main-container");
+    }
+
+    private void OnDrag(DragEventArgs e)
+    {
+        var movedRatio = (e.ClientX - rectDict["x"] - 8) / rectDict["width"];
+
+        var nextPercent = (1 - movedRatio) * 100;
+
+        if (Math.Abs(Wpercent - nextPercent) > 0.1)
+        {
+            Wpercent = nextPercent;
+        }
+    }
+
+    private async Task OnDragEnd(DragEventArgs e)
+    {
+        var dict = await js.InvokeAsync<Dictionary<string, double>>("langcode.getDomRect", "main-container");
+
+        var movedRatio = (e.ClientX - dict["x"] - 8) / dict["width"];
+
+        Wpercent = (1 - movedRatio) * 100;
+    }
+
+}

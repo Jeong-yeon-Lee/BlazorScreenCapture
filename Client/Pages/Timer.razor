@@ -1,0 +1,22 @@
+﻿@page "/timer"
+@inject IJSRuntime js
+
+<h3>Timer</h3>
+
+<div class="timer">Time left = <span id="timer">00:00</span></div>
+
+<button @onclick="OnClickTimer">타이머 시작</button>
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+    private async Task OnClickTimer()
+    {
+        await js.InvokeVoidAsync("Timer.InitializeTimer");
+    }
+
+}
