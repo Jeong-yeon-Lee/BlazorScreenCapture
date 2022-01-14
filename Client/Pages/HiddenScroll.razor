@@ -1,0 +1,42 @@
+﻿@page "/scroll"
+@inject IJSRuntime js
+
+
+<h3>HiddenScroll</h3>
+<div @onscroll="ScrollTestt" class="scroll-box" id="scrollBox">
+    <ul>
+        @for (int i = 0; i < 50; i++)
+        {
+            <li>와와왁왁왁 @i</li>
+        }
+
+
+    </ul>
+</div>
+<button @onclick="ClearScroll" class="mt-3">💨💨스크롤 없애기</button>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+    }
+
+
+    private async Task ScrollTestt(EventArgs e)
+    {
+        //int i=e.GetHashCode();
+      
+        //object typeee=e.GetType();
+       // Console.WriteLine(i);
+        //Console.WriteLine(typeee);
+        await js.InvokeVoidAsync("scrollTest");
+    }
+    private async Task ClearScroll()
+    {
+        await js.InvokeVoidAsync("clearScroll");
+    }
+}
