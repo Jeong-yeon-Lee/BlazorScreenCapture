@@ -14,7 +14,26 @@
     </ul>
 </div>
 <button @onclick="ClearScroll" class="mt-3">💨💨스크롤 없애기</button>
+
+  
+<div style="min-width:200px; height:30px; border:1px solid red;" class="d-flex">
+    <div class="position-relative" style="min-width:200px; border:1px solid blue;">
+        <input class="input-test position-absolute" @bind="@testText" @bind:event="oninput" />
+        <div class="position-relative test-copy">@testText</div>
+    </div>
+    <div class="position-relative"  style="min-width: 200px; border: 1px solid purple;">
+        <input class="input-test position-absolute" @bind="@testText2" @bind:event="oninput" />
+        <div class="position-relative test-copy">@testText2</div>
+    </div>
+</div>
+
+
+  
 @code {
+
+    string testText;
+    string testText2;
+
     protected override async Task OnInitializedAsync()
     {
 
@@ -29,9 +48,9 @@
     private async Task ScrollTestt(EventArgs e)
     {
         //int i=e.GetHashCode();
-      
+
         //object typeee=e.GetType();
-       // Console.WriteLine(i);
+        // Console.WriteLine(i);
         //Console.WriteLine(typeee);
         await js.InvokeVoidAsync("scrollTest");
     }
